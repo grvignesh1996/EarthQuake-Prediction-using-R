@@ -1,0 +1,37 @@
+kmeans
+library(plyr)
+library(ggplot2)
+library(cluster)
+library(lattice)
+library(graphics)
+library(grid)
+library(gridExtra)
+grade_input =  as.data.frame(read.csv("C:/Users/VIGNESH G R/Desktop/pre6.csv")) 
+names(grade_input)
+kmdata_orig = as.matrix(grade_input[,c("Latitude","Longitude","Magnitude")]) 
+kmdata<-kmdata_orig[1:3] 
+kmdata
+km<-kmdata_orig[2:4]
+km<-kmeans(kmdata,2,5) 
+print(km)
+plot(kmdata,col=km$cluster) 
+points(km$centers,col=1:2,pch=10)
+
+decision tree
+library("rpart")
+library("rpart.plot")
+play_decision <- read.table ("C:/Users/VIGNESH G R/Desktop/pre6.csv", header=TRUE, sep=",")
+names(play_decision)
+summary(play_decision)
+fit<-rpart(Occur~Latitude+Longitude+Magnitude,
+method = "class"
+,
+data = play_decision,
+control=rpart.control(minsplit = 1),
+parms = list(split='information'))
+summary(fit)
+model<-rpart.plot(fit,type=4,extra=2,clip.right.labs=FALSE,varlen=0,faclen=0)
+names(model)
+newdata<-data.frame(Latitude="36.123",Longitude="21.897",Magnitude="2.9")
+newdata
+predict(model,newdata,type="class")
